@@ -18,10 +18,14 @@ app.get('/', function(req,res){
 	res.render('title');
 });
 
-app.use(function(req,res,next){
+app.use(function(req, res, next){
 	var view = __dirname + '/views/' + req.path + '.handlebars';
 	if(fs.existsSync(view)) return res.render(view);
 	next();
+});
+
+app.use(function(req, res, next){
+	res.render('404');
 });
 
 var port = 15760;

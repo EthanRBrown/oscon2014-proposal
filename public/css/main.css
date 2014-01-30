@@ -211,7 +211,16 @@ ul.instructions li {
     line-height: 22px;
 }
 
-.menu ul cite {
+h1 {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+h1 cite {
+	font-style: normal;
+}
+
+cite.proposal {
     text-transform: uppercase;
 }
 
