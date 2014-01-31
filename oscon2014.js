@@ -14,6 +14,10 @@ app.set('view engine', 'handlebars');
 app.use(app.router);
 app.use(express.static(__dirname + '/public'));
 
+app.get('/video/intro', function(req, res){
+	res.redirect('https://vimeo.com/85503200');
+});
+
 app.get('/', function(req,res){
 	res.render('title');
 });
