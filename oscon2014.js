@@ -11,7 +11,6 @@ var app = express();
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
-app.use(app.router);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/video/intro', function(req, res){
