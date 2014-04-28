@@ -1,6 +1,6 @@
 var recluster = require('recluster');
 
-var cluster = recluster(__dirname + '/oscon2014.js');
+var cluster = recluster(__dirname + '/oscon2014.js', { workers: 2 });
 cluster.run();
 
 process.on('SIGUSR2', function(){
