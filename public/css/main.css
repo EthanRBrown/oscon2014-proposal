@@ -224,6 +224,38 @@ cite.proposal {
     text-transform: uppercase;
 }
 
+.vote {
+    font-family: Helvitca, Ariel, sans-serif;
+}
+
+.vote .header {
+	margin-bottom: 6px;
+}
+
+.vote button {
+    border: solid 1px #55acee;
+    color: #55acee;
+    background: white;
+    border-radius: 6px;
+    padding: 8px 16px;
+    text-align: center;
+}
+
+.vote button:disabled {
+	border: solid 1px #eee;
+	color: white;
+	background-color: #eee;
+}
+
+.vote .twitterLogo {
+    width: 26px;
+}
+
+.vote .status {
+    color: #55acee;
+	font-size: 14px;
+}
+
 
 /* ==========================================================================
    Media Queries

@@ -3,6 +3,15 @@
     "recluster": "~0.3.6",
     "express": "~4.1.0",
     "express3-handlebars": "~0.5.0",
-    "connect": "~2.14.5"
+    "connect": "~2.14.5",
+    "passport": "~0.2.0",
+    "passport-twitter": "~1.0.2",
+    "mongoose": "~3.8.8",
+    "connect-redis": "~2.0.0",
+    "express-session": "~1.0.3",
+    "cookie-parser": "~1.0.1"
+  },
+  "devDependencies": {
+    "morgan": "~1.0.0"
   }
 }
