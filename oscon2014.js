@@ -12,7 +12,6 @@ var session = require('express-session'),
 
 var app = express();
 
-app.set('host', 'nibbler3.local');
 app.set('port', 15760);
 
 if(app.get('env')=='development') app.use(require('morgan')('dev'));
@@ -20,7 +19,11 @@ if(app.get('env')=='development') app.use(require('morgan')('dev'));
 var credentials = require('./credentials.js');
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
-app.use(session({ store: new RedisStore(credentials.redis['session']) }));
+if(app.get('env')==='development'){
+	app.use(session());
+} else {
+	app.use(session({ store: new RedisStore(credentials.redis.session) }));
+}
 
 var mongoose = require('mongoose');
 mongoose.connect(credentials.mongo.connectionString, {
@@ -45,12 +48,13 @@ app.get('/', function(req,res){
 var VOTES_PER_USER = 3;
 
 app.use(function(req, res, next){
-	var user = req.session && req.session.passport && req.session.passport.user;
+	var user = req.user;
 	if(!user) return next();
 	Vote.find({ userId: user._id }, function(err, votes){
 		if(err) return res.status(500).render('500');
 		res.locals.user = { 
 			id: user.id, 
+			_id: user._id,
 			votes: votes.map(function(vote){ return vote.proposal; }),
 			votesAvailable: VOTES_PER_USER,
 			votesRemaining: VOTES_PER_USER - votes.length,

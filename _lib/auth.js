@@ -16,7 +16,7 @@ passport.serializeUser(function(id, done){
 });
 
 passport.deserializeUser(function(id, done){
-	User.find({ id: id }, function(err, user){
+	User.findOne({ id: id }, function(err, user){
 		if(err) return done('Database error: ' + err, null);
 		if(!user) return done('Unknown user: ' + id, null);
 		done(null, user);
@@ -25,13 +25,10 @@ passport.deserializeUser(function(id, done){
 
 module.exports = function(app, credentials){
 
-	var host = app.get('host');
-	var port = (app.get('port') || 80)==80 ? '' : ':' + app.get('port');
-
 	passport.use(new TwitterStrategy({
 		consumerKey: credentials.twitter.consumerKey,
 		consumerSecret: credentials.twitter.consumerSecret,
-		callbackURL: 'http://' + host + port + '/auth/twitter/callback',
+		callbackURL: '/auth/twitter/callback',
 	}, function(token, tokenSecret, profile, done){
 		done(null, '@' + profile.username);
 	}));
