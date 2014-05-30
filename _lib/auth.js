@@ -16,6 +16,7 @@ passport.serializeUser(function(id, done){
 });
 
 passport.deserializeUser(function(id, done){
+	if(typeof id==='object') id = id.id;
 	User.findOne({ id: id }, function(err, user){
 		if(err) return done('Database error: ' + err, null);
 		if(!user) return done('Unknown user: ' + id, null);
