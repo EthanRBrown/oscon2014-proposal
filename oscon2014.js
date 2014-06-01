@@ -2,7 +2,13 @@ var http = require('http');
 var express = require('express');
 var handlebars = require('express3-handlebars').create({
 	defaultLayout:'main',
-
+	helpers: {
+		section: function(name, options){
+			if(!this._sections) this._sections = {};
+			this._sections[name] = options.fn(this);
+			return null;
+		}
+	},
 });
 var fs = require('fs');
 var Vote = require('./_models/vote.js');
@@ -10,6 +16,13 @@ var Vote = require('./_models/vote.js');
 var session = require('express-session'),
 	RedisStore = require('connect-redis')(session);
 
+// Array.prototype.find polyfill
+if(!Array.prototype.find) Object.defineProperty(Array.prototype, 'find', {
+	value: function(predicate){
+		for(var i=0; i<this.length; i++) if(predicate(this[i])) return this[i];
+	},
+	enumerable: false,
+});
 var app = express();
 
 app.set('port', 15760);
@@ -17,6 +30,7 @@ app.set('port', 15760);
 if(app.get('env')=='development') app.use(require('morgan')('dev'));
 
 var credentials = require('./credentials.js');
+var raven = new (require('raven').Client)(credentials.sentry.dsn);
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
 if(app.get('env')==='development'){
@@ -88,14 +102,71 @@ app.get('/unvote', function(req, res){
 	});
 });
 
+var proposals = {
+	'/page4': 'BE THE COMPOSER',
+	'/page5': 'DARE YOU ACCEPT THE CHALLENGE',
+	'/page7': 'YOU CHOOSE THE ADVENTURE',
+	'/page8': 'GOING VIRAL',
+	'/page9': 'POSTMODERN POINTILLISM',
+	'/page11': 'WHERE WILL YOU BE?',
+	'/page12': 'DEGREES OF SEPARATION',
+	'/page13': 'YOU ARE THE HEAT MAP',
+	'/page28': 'OSCONOPHONE',
+	'/page29': 'DIGITAL DANCING',
+}
+
+app.get('/results', function(req, res){
+	// prevent this page from being indexed
+	res.locals.noRobots = true;
+	// user not logged in -- show login dialog
+	if(!req.user) return res.render('results');
+	// user not authorized -- redirect to 403
+	if(credentials.authorization.viewResults.indexOf(req.user.id)<0) return res.status(403).render('403');
+	// display results
+	Vote.find(function(err, votes){
+		context = {
+			votes : votes.reduce(function(c, v){
+				var x = c.find(function(y){ return y.path===v.proposal; });
+				if(!x) x = { 
+					path: v.proposal, 
+					name: proposals[v.proposal],
+					count: 0 
+				}, c.push(x);
+				x.count++;
+				return c;
+			}, []),
+		};
+		context.votes.sort(function(a, b) { return b.count - a.count; });
+		Object.defineProperty(context.votes, 'total', {
+			value: context.votes.reduce(function(c, v) { return c += v.count; }, 0),
+			enumerable: false,
+		});
+		return res.render('results', context);
+	});
+});
+
+var autoViews = {};
+
 app.use(function(req, res, next){
-	var view = __dirname + '/views/' + req.path + '.handlebars';
-	if(fs.existsSync(view)) return res.render(view);
-	next();
+	var view = autoViews[req.path];
+	if(!view){
+		view = __dirname + '/views/' + req.path + '.handlebars';
+		if(!fs.existsSync(view)) return next();
+		autoViews[req.path] = view;
+	}
+	res.render(view);
 });
 
 app.use(function(req, res, next){
 	res.status(404).render('404');
+});
+
+app.use(function(err, req, res, next){
+	raven.captureError(err, { extra: { 
+		host: req.host,
+		url: req.originalUrl,
+		userId: req.user ? req.user.id : null } });
+	res.status(500).render('500');
 });
 
 http.createServer(app).listen(app.get('port'), function(){

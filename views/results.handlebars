@@ -1,0 +1,55 @@
+<div class="vote">
+	{{#if user}}
+		<button data-action="logout">
+			<img src="//d2ibrldefkdyp1.cloudfront.net/img/Twitter_logo_blue_26.png" class="twitterLogo" alt="Twitter Logo">
+			Logout
+		</button>
+	{{else}}
+		<button data-action="login">
+			<img src="//d2ibrldefkdyp1.cloudfront.net/img/Twitter_logo_blue_26.png" class="twitterLogo" alt="Twitter Logo">
+			Login to see results
+		</button>
+	{{/if}}
+</div>
+<div class="results">
+	<h2>Voting Results</h2>
+	{{#if user}}
+		<table>
+			<tbody>
+				{{#each votes}}
+					<tr>
+						<td><a href="{{path}}">{{name}}</a></td>
+						<td>
+							<div class="count">{{count}}</div>
+							<div class="graphContainer">
+								<div class="graph" data-value="{{count}}"></div>
+							</div>
+						</td>
+					</tr>
+				{{/each}}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th>Total</th>
+					<th><span class="votesTotal" data-value="{{votes.total}}">{{votes.total}}</span></th>
+				</tr>
+			</tfoot>
+		</table>
+
+	{{else}}
+		Please log in with Twitter to see results.
+	{{/if}}
+</div>
+
+
+{{#section 'jquery'}}
+<script>
+	var total = Number($('.votesTotal').data('value'));
+	$('.graph').each(function(){
+		var $this = $(this);
+		var value = Number($this.data('value'));
+		$this.css('width', Math.round(value/total*100) + '%');
+		console.log(value + ': ' + Math.round(value/total*100) + '%');
+	});
+</script>
+{{/section}}

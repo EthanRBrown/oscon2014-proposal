@@ -9,7 +9,8 @@
     "connect-redis": "~2.0.0",
     "cookie-parser": "~1.1.0",
     "express-session": "~1.2.0",
-    "connect": "~3.0.0"
+    "connect": "~3.0.0",
+    "raven": "~0.6.3"
   },
   "devDependencies": {
     "morgan": "~1.0.0"
