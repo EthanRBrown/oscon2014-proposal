@@ -145,6 +145,16 @@ app.get('/results', function(req, res){
 	});
 });
 
+app.get('/status', function(req, res){
+	Vote.find(function(err, votes){
+		if(err) return res.status(500).json({ status: 'error', message: 'database error', stack: err.stack });
+		return res.json({ 
+			status: 'okay',
+			votes: votes.length,
+		});
+	});
+});
+
 var autoViews = {};
 
 app.use(function(req, res, next){
