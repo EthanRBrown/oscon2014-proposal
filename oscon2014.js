@@ -23,6 +23,7 @@ if(!Array.prototype.find) Object.defineProperty(Array.prototype, 'find', {
 	},
 	enumerable: false,
 });
+
 var app = express();
 
 app.set('port', 15760);
@@ -43,6 +44,14 @@ var mongoose = require('mongoose');
 mongoose.connect(credentials.mongo.connectionString, {
 	server: { socketOptions: { keepAlive: 1 } },
 });
+
+// keep database connection alive
+setInterval(function(){
+	// arbitrary database access
+	Vote.count(function(err, count){
+		if(err) return raven.captureError(err, { extra: { component: 'database keep-alive' } });
+	});
+}, 1000 * 60 * 5);
 
 require('./_lib/auth.js')(app, credentials);
 
