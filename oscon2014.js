@@ -51,7 +51,7 @@ setInterval(function(){
 	Vote.count(function(err, count){
 		if(err) return raven.captureError(err, { extra: { component: 'database keep-alive' } });
 	});
-}, 1000 * 60 * 5);
+}, 1000 * 60);
 
 require('./_lib/auth.js')(app, credentials);
 
