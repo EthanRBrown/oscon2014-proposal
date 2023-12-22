@@ -1,0 +1,59 @@
+<div class='vote'>
+  <div class='header voted-for'>
+    {{#if yesVote}}
+      <span style="font-size: xx-large; font-weight: bold">☑</span> You have voted for this proposal!
+    {{/if}}
+  </div>
+  <div class='actions'>
+    {{#if user}}
+      {{#if yesVote}}
+        <button data-action='unvote'>
+          <img
+            src='//d2ibrldefkdyp1.cloudfront.net/img/Twitter_logo_blue_26.png'
+            class='twitterLogo'
+            alt='Twitter Logo'
+          />
+          Un-vote
+        </button>
+      {{else}}
+        {{#if user.outOfVotes}}
+          <button disabled>
+            <img
+              src='//d2ibrldefkdyp1.cloudfront.net/img/Twitter_logo_white_26.png'
+              class='twitterLogo'
+              alt='Twitter Logo'
+            />
+            You are out of votes!
+          </button>
+        {{else}}
+          <button data-action='vote'>
+            <img
+              src='//d2ibrldefkdyp1.cloudfront.net/img/Twitter_logo_blue_26.png'
+              class='twitterLogo'
+              alt='Twitter Logo'
+            />
+            Vote for this proposal!
+          </button>
+        {{/if}}
+      {{/if}}
+    {{else}}
+      <button data-action='login'>
+        <img
+          src='//d2ibrldefkdyp1.cloudfront.net/img/Twitter_logo_blue_26.png'
+          class='twitterLogo'
+          alt='Twitter Logo'
+        />
+        Login to vote!
+      </button>
+    {{/if}}
+  </div>
+  {{#if user}}
+    <div class='status'>
+      You have
+      {{user.votesRemaining}}
+      of
+      {{user.votesAvailable}}
+      votes left.
+    </div>
+  {{/if}}
+</div>

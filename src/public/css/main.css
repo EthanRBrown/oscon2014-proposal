@@ -64,9 +64,6 @@ body {
     font: 20px/32px 'Libre Baskerville', serif;
 }
 
-.wrapper {
-}
-
 /* ===================
     ALL: Orange Theme
    =================== */
@@ -225,11 +222,15 @@ cite.proposal {
 }
 
 .vote {
-    font-family: Helvitca, Ariel, sans-serif;
+    font-family: Helvetia, Ariel, sans-serif;
 }
 
 .vote .header {
 	margin-bottom: 6px;
+}
+
+.vote .header.voted-for {
+    color: #383;
 }
 
 .vote button {
@@ -257,33 +258,13 @@ cite.proposal {
 }
 
 .results table {
-    font-size: 14px;
+    font-size: 12px;
 }
 
-.results table th {
-    text-align: left;
-}
-
-.results table td {
-    padding: 4px 12px 0 0;
-}
-
-.results table td .count {
-    float: left;
-}
-
-.results table td .graphContainer {
-    padding-left: 8px;
-    padding-top: 8px;
-    float: left;
-    width: 60px;
-    height: 14px;
-}
-
-.results table td .graphContainer .graph {
+footer {
+    margin-top: 2.5em;
     width: 100%;
-    height: 14px;
-    background-color: blue;
+    text-align: right;
 }
 
 
@@ -387,7 +368,7 @@ cite.proposal {
     background-color: transparent;
     border: 0;
     overflow: hidden;
-    *text-indent: -9999px;
+    text-indent: -9999px;
 }
 
 .ir:before {
@@ -438,7 +419,7 @@ cite.proposal {
 }
 
 .clearfix {
-    *zoom: 1;
+    zoom: 1;
 }
 
 /* ==========================================================================

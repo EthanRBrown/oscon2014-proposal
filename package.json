@@ -1,16 +1,17 @@
 {
   "dependencies": {
-    "recluster": "~0.3.6",
-    "express": "~4.1.0",
-    "express3-handlebars": "~0.5.0",
-    "passport": "~0.2.0",
-    "passport-twitter": "~1.0.2",
-    "mongoose": "~3.8.8",
-    "connect-redis": "~2.0.0",
-    "cookie-parser": "~1.1.0",
-    "express-session": "~1.2.0",
     "connect": "~3.0.0",
-    "raven": "~0.6.3"
+    "connect-redis": "^7.1.0",
+    "cookie-parser": "^1.4.6",
+    "env-var": "^7.4.1",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^8.0.3",
+    "passport": "^0.7.0",
+    "passport-twitter": "^1.0.4",
+    "recluster": "~0.3.6",
+    "redis": "^4.6.12"
   },
   "devDependencies": {
     "morgan": "~1.0.0"

@@ -1,0 +1,27 @@
+services:
+  web:
+    image: node:lts
+    restart: unless-stopped
+    ports: [8080:80]
+    env_file: .env
+    depends_on: [mongodb, redis]
+    volumes:
+      - ./src:/server
+      - ./node_modules:/server/node_modules # probably not prod-friendly; should run "npm install" in Dockerfile
+    working_dir: /server
+    command: node oscon2014.js
+
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    ports: [27017:27017]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:
+      - ./var/mongodb_data:/data/db
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports: [6379:6379]
